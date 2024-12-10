@@ -1,0 +1,1 @@
+& '.\build\Open WebUI Desktop Setup 1.0.7.exe'
