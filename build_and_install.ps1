@@ -1,12 +1,17 @@
-# $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
-# Set-Location -Path $scriptDirectory
+$scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
+Set-Location -Path $scriptDirectory
 
-# $buildScript = $scriptDirectory + '\build.ps1'
+$buildScript = $scriptDirectory + '\build.ps1'
 
-# $newProcess = Start-Process -FilePath "powershell.exe" -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -File "' + $buildScript + '"') -Verb RunAs
+Start-Process -FilePath "powershell.exe" -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -File "' + $buildScript + '"') -Verb RunAs
 
-# $newProcess.WaitForExit()
+Start-Sleep -Seconds 10
 
-# if($newProcess.ExitCode -eq 0){
-#     ./install.ps1
-# }
+$newProcesses = Get-Process | Where-Object {$_.Name -like "*node*"}
+
+$newProcesses.foreach{
+    $_.WaitForExit()
+}
+
+./install.ps1
+

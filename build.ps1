@@ -10,4 +10,6 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location -Path $scriptDirectory
 
+npm install --force
+
 npm run build | Tee-Object -FilePath "build.log"
