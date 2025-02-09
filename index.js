@@ -19,9 +19,10 @@ const toggleVisibility = action => {
 };
 
 const registerKeybindings = () => {
-    globalShortcut.unregisterAll();
     const shortcutA = getValue('shortcutA'),
-        shortcutB = getValue('shortcutB');
+    shortcutB = getValue('shortcutB');
+    
+    if(shortcutA || shortcutB) globalShortcut.unregisterAll();
 
     if (shortcutA) {
         globalShortcut.register(shortcutA, () => toggleVisibility(!visible));
@@ -34,6 +35,10 @@ const registerKeybindings = () => {
         });
     }
 };
+
+const customUIAdjustments = () => {
+    document.getElementsByClassName('w-full pt-2')[0].style.alignContent = 'end';
+}
 
 const setUrlForWebview = () => {
     const url = getValue('open-webui-url'); 
@@ -93,6 +98,8 @@ const createWindow = () => {
         }
         isQuitting = false;
     });
+
+    customUIAdjustments();
 };
 
 const createDialog = () => {
@@ -115,7 +122,7 @@ const createDialog = () => {
 
 const createTray = () => {
     tray = new Tray(path.resolve(__dirname, 'splash.png'));
-    var dialog = createDialog();
+    var dialog = null;
 
     const contextMenu = Menu.buildFromTemplate([
         {
@@ -126,7 +133,7 @@ const createTray = () => {
         {
             label: "Set Configs",
             click: () => {
-                if(dialog.isDestroyed()) dialog = createDialog();
+                if(!dialog || dialog.isDestroyed()) dialog = createDialog();
                 dialog.show();
             }
         },
@@ -156,8 +163,20 @@ const createTray = () => {
     tray.on('click', () => toggleVisibility(true));
 };
 
-app.whenReady().then(() => {
-    createTray();
-    createWindow();
-    registerKeybindings();
-}).catch(console.error);
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+    app.quit();
+} else {
+    app.on('second-instance', () => {
+        if (openwebui) {
+            if(!openwebui.isVisible()) toggleVisibility(!visible);
+            openwebui.focus();
+        }
+    });
+    app.whenReady().then(() => {
+        createTray();
+        createWindow();    
+        registerKeybindings();
+    }).catch(console.error);
+}
