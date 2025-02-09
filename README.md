@@ -2,7 +2,7 @@
 I've developed a straightforward desktop client for Open WebUI using the Electron framework.
 
 Precompiled version for Windows is available for download here:
-[Windows (Setup)](https://github.com/tristandostaler/open-webui-desktop/releases/download/v1.0.7/Open.WebUI.Desktop.Setup.1.0.7.exe)
+[Windows (Setup)](https://github.com/tristandostaler/open-webui-desktop/releases/download/v1.0.8/Open.WebUI.Desktop.Setup.1.0.8.exe)
 
 For other systems, simply adapt and build the source code to suit your needs.
 
