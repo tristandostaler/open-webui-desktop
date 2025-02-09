@@ -1,6 +1,6 @@
 {
   "name": "open-webui-desktop",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A simple Open WebUI client using the Electron framework",
   "main": "index.js",
   "scripts": {
